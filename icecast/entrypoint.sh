@@ -15,6 +15,16 @@ if [ -z "$ICECAST_RELAY_PASSWORD" ]; then
   exit 1
 fi
 
+# Reject placeholder passwords — users must set real values in .env
+for VAR in ICECAST_SOURCE_PASSWORD ICECAST_ADMIN_PASSWORD ICECAST_RELAY_PASSWORD; do
+  eval VAL=\$$VAR
+  if [ "$VAL" = "changeme" ]; then
+    echo "ERROR: $VAR is still set to 'changeme'." >&2
+    echo "  Copy .env.example to .env and set real passwords before starting." >&2
+    exit 1
+  fi
+done
+
 SOURCE_PASSWORD="$ICECAST_SOURCE_PASSWORD"
 ADMIN_PASSWORD="$ICECAST_ADMIN_PASSWORD"
 ADMIN_USERNAME="${ICECAST_ADMIN_USERNAME:-admin}"
