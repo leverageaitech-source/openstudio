@@ -40,7 +40,7 @@ services:
     ports:
       - "6736:6736"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=${NODE_ENV:-production}
       - PORT=6736
     depends_on:
       - icecast
